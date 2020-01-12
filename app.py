@@ -19,7 +19,7 @@ class Todo(db.Model):
         return f"<Todo {self.id} {self.description}"
 
 
-db.create_all()
+# db.create_all()  we won't need it as we will depends on the migrations to syc. out database
 
 
 @app.route("/todos/create", methods=["POST"])
