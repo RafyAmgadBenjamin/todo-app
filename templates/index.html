@@ -11,6 +11,21 @@
             list-style: none;
             padding: 0;
             margin: 0;
+            width: 200px;
+        }
+
+        li {
+            clear: both;
+        }
+
+        li button {
+            -webkit-appearance: none;
+            border: none;
+            outline: none;
+            color: red;
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
         }
     </style>
 </head>
@@ -27,7 +42,9 @@
         {% for d in data %}
         <li> <input class="check-completed" data-id="{{d.id}}" type="checkbox" {% if d.completed %} checked
                 {% endif %} />
-            {{d.description}}</li>
+            {{d.description}}
+            <button>&cross;</button>
+        </li>
         {%endfor%}
     </ul>
     <script>
@@ -65,7 +82,7 @@
                 return response.json();
             }).then(function (jsonResponse) {
                 console.log(jsonResponse);
-                < !-- const liItem = document.createElement('LI'); //TODO: this needed to be updated to contain the check box also -->
+                const liItem = document.createElement('LI'); //TODO: this needed to be updated to contain the check box also -->
                 liItem.innerHTML = jsonResponse['description'];
                 document.getElementById('todos').appendChild(liItem);
                 document.getElementById('error').className = 'hidden';
