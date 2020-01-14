@@ -43,11 +43,25 @@
         <li> <input class="check-completed" data-id="{{d.id}}" type="checkbox" {% if d.completed %} checked
                 {% endif %} />
             {{d.description}}
-            <button>&cross;</button>
+            <button class="delete-btn" data-id="{{d.id}}">&cross;</button>
         </li>
         {%endfor%}
     </ul>
     <script>
+        const deleteBTNs = document.querySelectorAll('.delete-btn');
+        for (let i = 0; i < deleteBTNs.length; i++) {
+            const deleteBtn = deleteBTNs[i];
+            deleteBtn.onclick = function (e) {
+                console.log('delete event', e)
+                const todoId = e.target.dataset['id'];
+                fetch('/todos/' + todoId + '/set-deleted', { method: 'DELETE' }).then(function () {
+                    document.getElementById('error').className = 'hidden';
+                }).catch(function () {
+                    document.getElementById('error').className = '';
+                })
+
+            }
+        }
         const checkboxes = document.querySelectorAll('.check-completed');
         for (let i = 0; i < checkboxes.length; i++) {
             const chechbox = checkboxes[i];
@@ -57,9 +71,7 @@
                 const todoId = e.target.dataset['id'];
                 fetch('/todos/' + todoId + '/set-completed', {
                     method: 'POST',
-                    body: JSON.stringify({
-                        'completed': newCompleted
-                    }), headers: { 'Content-Type': 'application/json' }
+                    headers: { 'Content-Type': 'application/json' }
                 }).then(function () {
                     document.getElementById('error').className = 'hidden';
                 }).catch(function () {
